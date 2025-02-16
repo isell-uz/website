@@ -388,28 +388,6 @@
                         </p>
                     </div>
                 </div>
-
-                <!-- Social media -->
-                <div class="social-buttons" x-data="{ open: false }">
-                    <button
-                            class="btn btn-toggle"
-                            x-bind:class="{ 'active': open }"
-                            x-on:click="open = !open">
-                        <i class="fas fa-sparkles"></i>
-                    </button>
-
-                        <a href="https://t.me/isell_uzb"
-                            class="btn btn-telegram"
-                            x-bind:class="{ 'show': open }">
-                        <i class="fab fa-telegram-plane"></i>
-                    </a>
-
-                    <a href="https://www.instagram.com/isell_uzbekistan"
-                            class="btn btn-instagram"
-                            x-bind:class="{ 'show': open }">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                </div>
             </div>
         </div>
         <div class="col-span-3">
@@ -422,17 +400,16 @@
 </section>
 
 <!-- Social media buttons -->
-<div class="social-buttons z-50" x-data="{ open: false }">
-    <button class="btn btn-toggle" x-bind:class="{ 'active': open }" x-on:click="open = !open">
-        <i class="fas fa-sparkles"></i>
-    </button>
+<div class="social-buttons z-50">
+    <a href="tel:555555557" class="btn btn-toggle">
+        <i class="fas fa-phone"></i>
+    </a>
 
-    <a href="https://t.me/isell_uzb" target="_blank" class="btn btn-telegram" x-bind:class="{ 'show': open }">
+    <a href="https://t.me/isell_uzb" target="_blank" class="btn btn-telegram show">
         <i class="fab fa-telegram-plane"></i>
     </a>
 
-    <a href="https://www.instagram.com/isell_uzbekistan" target="_blank" class="btn btn-instagram"
-       x-bind:class="{ 'show': open }">
+    <a href="https://www.instagram.com/isell_uzbekistan" target="_blank" class="btn btn-instagram show">
         <i class="fab fa-instagram"></i>
     </a>
 </div>
