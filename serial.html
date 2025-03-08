@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSell | IMEI qidiruv</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon/isell-icon.png">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive-bs4/2.2.9/responsive.bootstrap4.min.css">
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <style>
+        #serial-page {
+            color: #2563eb;
+        }
+
+        /* Custom DataTables styling */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_filter {
+            margin-bottom: 0.5rem;
+        }
+
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            .dataTables_wrapper .dataTables_length,
+            .dataTables_wrapper .dataTables_filter,
+            .dataTables_wrapper .dataTables_info,
+            .dataTables_wrapper .dataTables_paginate {
+                text-align: left;
+                float: none;
+                display: block;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<!-- Navigation -->
+<nav class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-2">
+                <a href="index.html">
+                    <img src="assets/images/isell.png" alt="Logo" class="w-24 sm:w-35">
+                </a>
+            </div>
+
+            <!-- Navigation Links -->
+            <div class="flex items-center space-x-6">
+                <a href="index.html" id="index-page"
+                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh sahifa</a>
+                <a href="serial.html" id="serial-page"
+                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI qidiruv</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container mx-auto px-4 py-6">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4">
+        <div>
+            <h1 class="text-2xl font-bold text-gray-800">IMEI qidiruv</h1>
+        </div>
+    </div>
+
+    <!-- DataTable -->
+    <div class="bg-white rounded-lg shadow p-4">
+        <!-- Custom Search Bar -->
+        <div class="mb-4 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <div class="flex-1 relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                    </svg>
+                </div>
+                <input
+                        id="customSearch"
+                        type="search"
+                        class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Seria nomer, IMEI1 yoki IMEI2 bilan qidiring..."
+                />
+            </div>
+            <div class="flex space-x-2">
+                <button
+                        id="searchBtn"
+                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                >
+                    Qidirish
+                </button>
+                <button
+                        id="clearBtn"
+                        class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200"
+                >
+                    Tozalash
+                </button>
+            </div>
+        </div>
+
+        <table id="serialsTable" class="display responsive nowrap w-full text-sm">
+            <thead>
+            <tr>
+                <th>Kompaniya</th>
+                <th>Seria Nomer</th>
+                <th>IMEI 1</th>
+                <th>IMEI 2</th>
+                <th>Oxirgi tolov</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Data will be loaded via API -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<!-- DataTables JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datatables.net-responsive/2.2.9/dataTables.responsive.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        let table = $('#serialsTable').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            ordering: false,
+            ajax: {
+                url: 'https://isell-imei-server.onrender.com/api/serials',
+                data: function (d) {
+                    d.page = (d.start / d.length) + 1;
+                    d.limit = d.length;
+                    if (d.search.value) {
+                        d.serial_number = d.search.value;
+                    }
+                },
+                dataFilter: function (data) {
+                    let json = JSON.parse(data);
+                    json.recordsTotal = json.pagination.total;
+                    json.recordsFiltered = json.pagination.total;
+
+                    return JSON.stringify(json);
+                }
+            },
+            columns: [
+                {
+                    data: null,
+                    render: function (data) {
+                        return 'iSell';
+                    }
+                },
+                {
+                    data: 'serial_number',
+                    render: function (data) {
+                        return '<div class="font-medium text-gray-900">' + (data || '-') + '</div>';
+                    }
+                },
+                {
+                    data: 'imei1',
+                    render: function (data) {
+                        return data || '-';
+                    }
+                },
+                {
+                    data: 'imei2',
+                    render: function (data) {
+                        return data || '-';
+                    }
+                },
+                {
+                    data: 'last_planned_date',
+                    render: function (data) {
+                        if (data) {
+                            return new Intl.DateTimeFormat('ru', {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                timeZone: "Asia/Tashkent",
+                            }).format(new Date(data))
+                        }
+
+                        return '-'
+                    }
+                }
+            ],
+            language: {
+                search: "Qidirish:",
+                lengthMenu: "Ko'rsatish _MENU_ ta",
+                info: '',
+                infoEmpty: "0 ta natija",
+                infoFiltered: "(_MAX_ ta natijadan filtrlangan)",
+                zeroRecords: "Malumot topilmadi",
+                paginate: {
+                    first: "Birinchi",
+                    last: "Oxirgi",
+                    next: "Keyingi",
+                    previous: "Avvalgi"
+                }
+            },
+            dom: '<"flex flex-col md:flex-row md:justify-between md:items-center"<"mb-2 md:mb-0"l><"hidden"f>>rt<"flex flex-col md:flex-row md:justify-between"<"mb-2 md:mb-0"i><"md:mb-0"p>>',
+            lengthMenu: [[10, 25, 50], [10, 25, 50]],
+            pageLength: 10,
+            pagingType: "simple_numbers",
+            drawCallback: function () {
+                // Enhance mobile responsiveness
+                $('.dataTables_paginate, .dataTables_info').addClass('text-sm');
+            }
+        });
+
+        // Custom search functionality
+        $('#searchBtn').on('click', function () {
+            table.search($('#customSearch').val()).draw();
+        });
+
+        // Allow search on Enter key
+        $('#customSearch').on('keyup', function (e) {
+            if (e.key === 'Enter') {
+                table.search($(this).val()).draw();
+            }
+        });
+
+        // Clear search
+        $('#clearBtn').on('click', function () {
+            $('#customSearch').val('');
+            table.search('').draw();
+        });
+
+        // Error handling
+        table.on('error.dt', function (e, settings, techNote, message) {
+            console.error('DataTables error:', message);
+            alert('Failed to load data. Please try again later.');
+        });
+    });
+</script>
+</body>
+</html>
