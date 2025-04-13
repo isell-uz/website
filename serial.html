@@ -13,6 +13,27 @@
         #serial-page {
             color: #2563eb
         }
+        
+        .result-card {
+            margin-bottom: 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .result-card:last-child {
+            margin-bottom: 0;
+        }
+        
+        .card-header {
+            background-color: #f3f4f6;
+            padding: 12px 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .card-body {
+            padding: 16px;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -39,7 +60,7 @@
 
 <!-- Main Content -->
 <div class="container mx-auto px-4 pt-10">
-    <div class="max-w-md mx-auto">
+    <div class="max-w-lg mx-auto">
         <!-- IMEI Lookup Header -->
         <div class="bg-blue-500 text-white text-center py-4 rounded-t-lg">
             <h1 class="text-xl font-medium">IMEI Qidiruv</h1>
@@ -71,53 +92,14 @@
             </div>
 
             <!-- Results Container -->
-            <div id="resultContainer" class="hidden">
-                <!-- Company, Product and Phone in top section -->
-                <div class="mb-4">
-                    <!-- Product Name -->
-                    <div class="mb-2">
-                        <h3 id="productName" class="text-base font-medium"></h3>
-                    </div>
-
-                    <!-- Phone and Company -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center text-sm">
-                            <span id="phoneNumber" class="font-medium text-blue-600"></span>
-                        </div>
-                        <div id="companyName"
-                             class="text-sm bg-blue-50 text-blue-700 font-medium rounded-full px-3 py-1"></div>
-                    </div>
+            <div id="resultsContainer" class="hidden">
+                <!-- Results count -->
+                <div class="mb-4 text-sm text-gray-500">
+                    <p><span id="resultsCount">0</span> ta natija topildi</p>
                 </div>
-
-                <!-- Divider -->
-                <hr class="my-3 border-gray-200">
-
-                <!-- IMEI Data in a simple two-column layout -->
-                <div class="grid grid-cols-2 gap-4">
-                    <!-- Serial Number -->
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">Seriya raqami</p>
-                        <p id="serialNumber" class="text-sm font-medium"></p>
-                    </div>
-
-                    <!-- Last Payment -->
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">So'nggi to'lov</p>
-                        <p id="lastPaymentDate" class="text-sm font-medium"></p>
-                    </div>
-
-                    <!-- IMEI 1 -->
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">IMEI 1</p>
-                        <p id="imei1" class="text-sm font-medium"></p>
-                    </div>
-
-                    <!-- IMEI 2 -->
-                    <div>
-                        <p class="text-xs text-gray-500 mb-1">IMEI 2</p>
-                        <p id="imei2" class="text-sm font-medium"></p>
-                    </div>
-                </div>
+                
+                <!-- Results list - this will be filled dynamically -->
+                <div id="resultsList"></div>
             </div>
 
             <!-- Error Container -->
@@ -136,18 +118,11 @@
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
         const loadingIndicator = document.getElementById('loadingIndicator');
-        const resultContainer = document.getElementById('resultContainer');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const resultsList = document.getElementById('resultsList');
+        const resultsCount = document.getElementById('resultsCount');
         const errorContainer = document.getElementById('errorContainer');
         const errorMessage = document.getElementById('errorMessage');
-
-        // DOM elements for result data
-        const productName = document.getElementById('productName');
-        const companyName = document.getElementById('companyName');
-        const serialNumber = document.getElementById('serialNumber');
-        const lastPaymentDate = document.getElementById('lastPaymentDate');
-        const imei1 = document.getElementById('imei1');
-        const imei2 = document.getElementById('imei2');
-        const phoneNumber = document.getElementById('phoneNumber');
 
         // Function to handle the search
         const performSearch = async () => {
@@ -161,7 +136,7 @@
             try {
                 // Show loading, hide results and errors
                 loadingIndicator.classList.remove('hidden');
-                resultContainer.classList.add('hidden');
+                resultsContainer.classList.add('hidden');
                 errorContainer.classList.add('hidden');
 
                 // Encode the search value for URL
@@ -175,24 +150,102 @@
                 }
 
                 const data = await response.json();
-
-                // Update the DOM with results
-                productName.textContent = data.product_name || 'N/A';
-                companyName.textContent = data.company_name || 'N/A';
-                serialNumber.textContent = data.serial_number || 'N/A';
-                lastPaymentDate.textContent = formatDate(data.last_payment_date) || 'N/A';
-                imei1.textContent = data.imei1 || 'N/A';
-                imei2.textContent = data.imei2 || 'N/A';
-                phoneNumber.textContent = data.phone_number || 'N/A';
+                
+                // Clear previous results
+                resultsList.innerHTML = '';
+                
+                // Handle both single object and array of objects
+                const resultsArray = Array.isArray(data) ? data : [data];
+                
+                // Update results count
+                resultsCount.textContent = resultsArray.length;
+                
+                // Create result cards for each item
+                resultsArray.forEach(item => {
+                    const resultCard = createResultCard(item);
+                    resultsList.appendChild(resultCard);
+                });
 
                 // Show results
-                resultContainer.classList.remove('hidden');
+                resultsContainer.classList.remove('hidden');
             } catch (error) {
                 console.error('Search error:', error);
                 showError('Hech qanday ma\'lumot topilmadi');
             } finally {
                 loadingIndicator.classList.add('hidden');
             }
+        };
+        
+        // Function to create a result card for a single item
+        const createResultCard = (item) => {
+            const card = document.createElement('div');
+            card.className = 'result-card';
+            
+            // Determine if this is a partial payment or fully paid
+            const isPaid = item.remaining_amount && item.remaining_amount <= 0;
+            const statusClass = isPaid ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700';
+            const statusText = isPaid ? 'To\'liq to\'langan' : 'To\'lov davom etmoqda';
+            
+            // Create the payment status display if we have payment data
+            let paymentInfoHTML = '';
+            if (item.remaining_amount !== undefined && item.sell_total !== undefined) {
+                const percentPaid = ((item.sell_total - item.remaining_amount) / item.sell_total * 100).toFixed(0);
+                paymentInfoHTML = `
+                    <div class="mt-3">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-xs text-gray-500">To'lov jarayoni</span>
+                            <span class="text-xs font-medium">${percentPaid}%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-blue-600 h-2 rounded-full" style="width: ${percentPaid}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-base font-medium">${item.product_name || 'N/A'}</h3>
+                        ${item.remaining_amount !== undefined ? 
+                            `<div class="text-xs ${statusClass} font-medium rounded-full px-3 py-1">${statusText}</div>` : 
+                            ''}
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center text-sm">
+                            <span class="font-medium text-blue-600">${item.phone_number || 'N/A'}</span>
+                        </div>
+                        <div class="text-sm bg-blue-50 text-blue-700 font-medium rounded-full px-3 py-1">
+                            ${item.company_name || 'N/A'}
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">Seriya raqami</p>
+                            <p class="text-sm font-medium">${item.serial_number || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">So'nggi to'lov</p>
+                            <p class="text-sm font-medium">${formatDate(item.last_payment_date) || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">IMEI 1</p>
+                            <p class="text-sm font-medium">${item.imei1 || 'N/A'}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 mb-1">IMEI 2</p>
+                            <p class="text-sm font-medium">${item.imei2 || 'N/A'}</p>
+                        </div>
+                    </div>
+                    
+                    ${paymentInfoHTML}
+                </div>
+            `;
+            
+            return card;
         };
 
         // Helper to format dates
@@ -215,7 +268,7 @@
         const showError = (message) => {
             errorMessage.textContent = message;
             errorContainer.classList.remove('hidden');
-            resultContainer.classList.add('hidden');
+            resultsContainer.classList.add('hidden');
         };
 
         // Event listeners
