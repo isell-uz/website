@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,31 +12,32 @@
         #serial-page {
             color: #2563eb
         }
-        
+
         .result-card {
             margin-bottom: 16px;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
             overflow: hidden;
         }
-        
+
         .result-card:last-child {
             margin-bottom: 0;
         }
-        
+
         .card-header {
             background-color: #f3f4f6;
             padding: 12px 16px;
             border-bottom: 1px solid #e5e7eb;
         }
-        
+
         .card-body {
             padding: 16px;
         }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-<!-- Navigation -->
+
+<!-- Updated Navigation with Mobile Menu -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
@@ -47,13 +47,41 @@
                 </a>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="flex items-center space-x-6">
-                <a href="index.html" id="index-page"
-                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh sahifa</a>
-                <a href="serial.html" id="serial-page"
-                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI qidiruv</a>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button type="button" class="mobile-menu-button text-gray-700 hover:text-blue-600"
+                        aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
             </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh
+                    sahifa</a>
+                <a href="calculator.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Kalkulyator</a>
+                <a href="serial.html"
+                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 active-desktop-nav-link">IMEI
+                    qidiruv</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu - hidden by default -->
+    <div class="mobile-menu hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+            <a href="index.html" id="mobile-index-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Bosh
+                sahifa</a>
+            <a href="calculator.html" id="mobile-calculate-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Kalkulyator</a>
+            <a href="serial.html" id="mobile-serial-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">IMEI
+                qidiruv</a>
         </div>
     </div>
 </nav>
@@ -99,7 +127,7 @@
                 <div class="mb-4 text-sm text-gray-500">
                     <p><span id="resultsCount">0</span> ta natija topildi</p>
                 </div>
-                
+
                 <!-- Results list - this will be filled dynamically -->
                 <div id="resultsList"></div>
             </div>
@@ -114,6 +142,7 @@
     </div>
 </div>
 
+<script src="assets/js/script.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -152,16 +181,16 @@
                 }
 
                 const data = await response.json();
-                
+
                 // Clear previous results
                 resultsList.innerHTML = '';
-                
+
                 // Handle both single object and array of objects
                 const resultsArray = Array.isArray(data) ? data : [data];
-                
+
                 // Update results count
                 resultsCount.textContent = resultsArray.length;
-                
+
                 // Create result cards for each item
                 resultsArray.forEach(item => {
                     const resultCard = createResultCard(item);
@@ -177,17 +206,17 @@
                 loadingIndicator.classList.add('hidden');
             }
         };
-        
+
         // Function to create a result card for a single item
         const createResultCard = (item) => {
             const card = document.createElement('div');
             card.className = 'result-card';
-            
+
             // Determine if this is a partial payment or fully paid
             const isPaid = item.remaining_amount && item.remaining_amount <= 0;
             const statusClass = isPaid ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700';
             const statusText = isPaid ? 'To\'liq to\'langan' : 'To\'lov davom etmoqda';
-            
+
             // Create the payment status display if we have payment data
             let paymentInfoHTML = '';
             if (item.remaining_amount !== undefined && item.sell_total !== undefined) {
@@ -204,14 +233,14 @@
                     </div>
                 `;
             }
-            
+
             card.innerHTML = `
                 <div class="card-header">
                     <div class="flex justify-between items-center">
                         <h3 class="text-base font-medium">${item.product_name || 'N/A'}</h3>
-                        ${item.remaining_amount !== undefined ? 
-                            `<div class="text-xs ${statusClass} font-medium rounded-full px-3 py-1">${statusText}</div>` : 
-                            ''}
+                        ${item.remaining_amount !== undefined ?
+                `<div class="text-xs ${statusClass} font-medium rounded-full px-3 py-1">${statusText}</div>` :
+                ''}
                     </div>
                 </div>
                 <div class="card-body">
@@ -246,7 +275,7 @@
                     ${paymentInfoHTML}
                 </div>
             `;
-            
+
             return card;
         };
 

@@ -87,6 +87,16 @@ html {
    transition: all 0.3s ease 0.2s;
 }
 
+/* Styles for active page links */
+.active-mobile-link {
+   color: #2563eb !important;
+   background-color: #f3f4f6;
+}
+
+.active-desktop-nav-link {
+   color: #2563eb !important
+}
+
 /* Bitrix form */
 .b24-form-wrapper.b24-form-border-bottom {
    margin-left: 0 !important;

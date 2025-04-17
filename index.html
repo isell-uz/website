@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="uz">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,33 +10,56 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-    <meta name="facebook-domain-verification" content="94lqassx6kwkscsjyt6p9laq5n9o98" />
+    <meta name="facebook-domain-verification" content="94lqassx6kwkscsjyt6p9laq5n9o98"/>
     <!-- Meta Pixel Code -->
     <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1360938364810238');
-    fbq('track', 'PageView');
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1360938364810238');
+        fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1360938364810238&ev=PageView&noscript=1"
+                   src="https://www.facebook.com/tr?id=1360938364810238&ev=PageView&noscript=1"
     /></noscript>
     <!-- End Meta Pixel Code -->
     <style>
-        #index-page {
-            color: #2563eb
+        @keyframes gradient-x {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animate-gradient-x {
+            background-size: 200% 200%;
+            animation: gradient-x 3s ease infinite;
         }
     </style>
 </head>
-
 <body class="bg-gray-50">
-<!-- Navigation -->
+
+<!-- Updated Navigation with Mobile Menu -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
     <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-16">
@@ -47,11 +69,41 @@
                 </a>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="flex items-center space-x-6">
-                <a href="index.html" id="index-page" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh sahifa</a>
-                <a href="serial.html" id="serial-page" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI qidiruv</a>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button type="button" class="mobile-menu-button text-gray-700 hover:text-blue-600"
+                        aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                         stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
             </div>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html"
+                   class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 active-desktop-nav-link">Bosh
+                    sahifa</a>
+                <a href="calculator.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Kalkulyator</a>
+                <a href="serial.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI
+                    qidiruv</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile menu - hidden by default -->
+    <div class="mobile-menu hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+            <a href="index.html" id="mobile-index-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Bosh
+                sahifa</a>
+            <a href="calculator.html" id="mobile-calculate-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Kalkulyator</a>
+            <a href="serial.html" id="mobile-serial-page"
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">IMEI
+                qidiruv</a>
         </div>
     </div>
 </nav>
@@ -74,7 +126,13 @@
                         Bizda eng so'nggi rusumli texnikalarni eng qulay shartlar asosida xarid qiling.
                     </p>
                     <section class="max-w-[40rem] flex justify-start">
-                        <script data-b24-form="inline/17/uv81nc" data-skip-moving="true">(function(w,d,u){var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);})(window,document,'https://cdn-ru.bitrix24.ru/b31643810/crm/form/loader_17.js');</script>
+                        <script data-b24-form="inline/17/uv81nc" data-skip-moving="true">(function (w, d, u) {
+                            var s = d.createElement('script');
+                            s.async = true;
+                            s.src = u + '?' + (Date.now() / 180000 | 0);
+                            var h = d.getElementsByTagName('script')[0];
+                            h.parentNode.insertBefore(s, h);
+                        })(window, document, 'https://cdn-ru.bitrix24.ru/b31643810/crm/form/loader_17.js');</script>
                     </section>
                 </div>
             </main>
@@ -109,7 +167,6 @@
 </div>
 
 <!-- Features -->
-
 <section class="relative py-20 bg-gradient-to-br from-blue-800 via-blue-900 to-indigo-900">
     <!-- Animated background patterns -->
     <div class="absolute inset-0 overflow-hidden">
@@ -131,7 +188,34 @@
             <h2 class="text-4xl font-bold text-white mb-4">
                 Premium elektronika – qulay to‘lov imkoniyatlari bilan sizga yaqinroq!
             </h2>
-            <!-- <p class="text-blue-200/80">Premium elektronika – qulay to‘lov imkoniyatlari bilan sizga yaqinroq!</p> -->
+            <!-- Eye-catching link button -->
+            <a href="calculator.html" class="relative inline-flex group mt-6">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-pink-600 to-blue-500 rounded-lg blur-lg opacity-70 group-hover:opacity-100 transition duration-200 animate-pulse"></div>
+                <button class="relative px-8 py-4 bg-white rounded-lg text-lg font-bold text-blue-900 flex items-center gap-2 transition-all duration-300 transform group-hover:scale-105">
+                    <!-- Calculator icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="text-blue-600">
+                        <rect width="16" height="20" x="4" y="2" rx="2"></rect>
+                        <line x1="8" x2="16" y1="6" y2="6"></line>
+                        <line x1="16" x2="16" y1="14" y2="18"></line>
+                        <path d="M16 10h.01"></path>
+                        <path d="M12 10h.01"></path>
+                        <path d="M8 10h.01"></path>
+                        <path d="M12 14h.01"></path>
+                        <path d="M8 14h.01"></path>
+                        <path d="M12 18h.01"></path>
+                        <path d="M8 18h.01"></path>
+                    </svg>
+                    <span>Kalkulyator</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                         class="transition-transform group-hover:translate-x-1">
+                        <path d="M5 12h14"></path>
+                        <path d="m12 5 7 7-7 7"></path>
+                    </svg>
+                </button>
+            </a>
         </div>
 
         <!-- Cards Container -->
@@ -176,13 +260,6 @@
             </div>
         </div>
 
-        <!-- CTA Button -->
-        <!-- <div class="text-center mt-20">
-            <a href="#"
-                class="inline-flex items-center px-8 py-4 bg-white text-blue-900 font-semibold rounded-xl hover:bg-blue-50 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Barcha Qurilmalarni Ko'rish
-            </a>
-        </div> -->
     </div>
 </section>
 
@@ -311,7 +388,6 @@
         </div>
     </div>
 </section>
-
 
 <!-- Featured Products -->
 <div id="products" class="container mx-auto px-4 py-16">
@@ -446,6 +522,7 @@
     </a>
 </div>
 
+<script src="assets/js/script.js"></script>
 <script>
     window.addEventListener('DOMContentLoaded', function () {
         gsap.registerPlugin()
@@ -461,5 +538,4 @@
     });
 </script>
 </body>
-
 </html>
