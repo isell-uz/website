@@ -109,3 +109,13 @@ html {
 .b24-form {
    width: 40rem !important;
 }
+
+section.max-w-\[40rem\] {
+   min-height: 550px;
+   position: relative;
+   z-index: 10;
+}
+.b24-form .b24-form-dropdown-container {
+   max-height: 350px;
+   overflow-y: auto;
+}
