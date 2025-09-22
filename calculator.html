@@ -1,924 +1,925 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mahsulot to'lov kalkulyatori</title>
-  <link rel="stylesheet" href="assets/css/output.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    /* Custom combobox styles */
-    .combobox-container {
-      position: relative;
-    }
-    .combobox-input {
-      width: 100%;
-      padding: 0.75rem 1rem;
-      border: 1px solid #D1D5DB;
-      border-radius: 0.5rem;
-      outline: none;
-      transition: all 0.2s ease;
-    }
-    .combobox-input:focus {
-      border-color: #3B82F6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    }
-    .combobox-options {
-      position: absolute;
-      z-index: 10;
-      width: 100%;
-      max-height: 200px;
-      overflow-y: auto;
-      margin-top: 4px;
-      background-color: white;
-      border: 1px solid #D1D5DB;
-      border-radius: 0.5rem;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-      display: none;
-    }
-    .combobox-option {
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
-    .combobox-option:hover, .combobox-option.active {
-      background-color: #EFF6FF;
-      color: #2563EB;
-    }
-    .combobox-option.hidden {
-      display: none;
-    }
-    /* Custom scrollbar */
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #b8c2cc;
-      border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #93a3b8;
-    }
-    /* Fade in animation */
-    .fade-in {
-      animation: fadeIn 0.3s ease-in-out;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    /* Pulse animation for selected items */
-    .pulse-once {
-      animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) 1;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.7; }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulot to'lov kalkulyatori</title>
+    <link rel="stylesheet" href="assets/css/output.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Custom combobox styles */
+        .combobox-container {
+            position: relative;
+        }
+        .combobox-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .combobox-input:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        .combobox-options {
+            position: absolute;
+            z-index: 10;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 4px;
+            background-color: white;
+            border: 1px solid #D1D5DB;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            display: none;
+        }
+        .combobox-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .combobox-option:hover, .combobox-option.active {
+            background-color: #EFF6FF;
+            color: #2563EB;
+        }
+        .combobox-option.hidden {
+            display: none;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b8c2cc;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #93a3b8;
+        }
+        /* Fade in animation */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Pulse animation for selected items */
+        .pulse-once {
+            animation: pulse 0.5s cubic-bezier(0.4, 0, 0.6, 1) 1;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans min-h-screen">
 
 <!-- Updated Navigation with Mobile Menu -->
 <nav class="bg-white shadow-sm sticky top-0 z-50">
-  <div class="container mx-auto px-4">
-    <div class="flex justify-between items-center h-16">
-      <div class="flex items-center space-x-2">
-        <a href="index.html">
-          <img src="assets/images/isell.png" alt="Logo" class="w-24 sm:w-35">
-        </a>
-      </div>
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-2">
+                <a href="index.html">
+                    <img src="assets/images/isell.png" alt="Logo" class="w-24 sm:w-35">
+                </a>
+            </div>
 
-      <!-- Mobile menu button -->
-      <div class="md:hidden">
-        <button type="button" class="mobile-menu-button text-gray-700 hover:text-blue-600" aria-expanded="false">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-          </svg>
-        </button>
-      </div>
+            <!-- Mobile menu button -->
+            <div class="md:hidden">
+                <button type="button" class="mobile-menu-button text-gray-700 hover:text-blue-600" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+            </div>
 
-      <!-- Desktop Navigation Links -->
-      <div class="hidden md:flex items-center space-x-6">
-        <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh sahifa</a>
-        <a href="calculator.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 active-desktop-nav-link">Kalkulyator</a>
-        <a href="serial.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI qidiruv</a>
-      </div>
+            <!-- Desktop Navigation Links -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="index.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">Bosh sahifa</a>
+                <a href="calculator.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300 active-desktop-nav-link">Kalkulyator</a>
+                <a href="serial.html" class="text-gray-700 hover:text-blue-600 font-medium transition duration-300">IMEI qidiruv</a>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- Mobile menu - hidden by default -->
-  <div class="mobile-menu hidden md:hidden">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
-      <a href="index.html" id="mobile-index-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Bosh sahifa</a>
-      <a href="calculator.html" id="mobile-calculate-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Kalkulyator</a>
-      <a href="serial.html" id="mobile-serial-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">IMEI qidiruv</a>
+    <!-- Mobile menu - hidden by default -->
+    <div class="mobile-menu hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50">
+            <a href="index.html" id="mobile-index-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Bosh sahifa</a>
+            <a href="calculator.html" id="mobile-calculate-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">Kalkulyator</a>
+            <a href="serial.html" id="mobile-serial-page" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-100">IMEI qidiruv</a>
+        </div>
     </div>
-  </div>
 </nav>
 
 <div class="container mx-auto px-4 py-6 max-w-lg">
-  <header class="text-center mb-6">
-    <h1 class="text-2xl font-bold text-blue-800">Mahsulot to'lov kalkulyatori</h1>
-  </header>
+    <header class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-blue-800">Mahsulot to'lov kalkulyatori</h1>
+    </header>
 
-  <div class="bg-white shadow-lg rounded-xl overflow-hidden">
-    <!-- Loading indicator -->
-    <div id="loading" class="text-center py-16">
-      <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-t-2 border-blue-700"></div>
-      <p class="mt-3 text-gray-600">Ma'lumotlar yuklanmoqda...</p>
-    </div>
-
-    <!-- Selection Form - hidden until data loads -->
-    <div id="calculator-form" class="hidden">
-      <div class="p-5">
-        <div class="space-y-5 mb-6">
-          <!-- Category Selection -->
-          <div>
-            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Kategoriya</label>
-            <select id="category" class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white transition-all">
-              <option value="">Kategoriyani tanlang</option>
-              <!-- Categories will be loaded here -->
-            </select>
-          </div>
-
-          <!-- Product Selection - Combobox -->
-          <div id="product-selector" class="opacity-50 transition-all duration-300">
-            <label for="product-input" class="block text-sm font-medium text-gray-700 mb-2">Mahsulot</label>
-            <div class="combobox-container">
-              <input type="text" id="product-input" autocomplete="off" class="combobox-input" placeholder="Mahsulotni tanlang yoki qidiring" disabled>
-              <input type="hidden" id="product-selected-id">
-              <div id="product-options" class="combobox-options">
-                <!-- Product options will be populated here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Variation Selection - Combobox -->
-          <div id="variation-selector" class="opacity-50 transition-all duration-300">
-            <label for="variation-input" class="block text-sm font-medium text-gray-700 mb-2">Variatsiya</label>
-            <div class="combobox-container">
-              <input type="text" id="variation-input" autocomplete="off" class="combobox-input" placeholder="Variatsiyani tanlang yoki qidiring" disabled>
-              <input type="hidden" id="variation-selected-id">
-              <div id="variation-options" class="combobox-options">
-                <!-- Variation options will be populated here -->
-              </div>
-            </div>
-          </div>
-
-          <!-- Tariff Selection -->
-          <div id="tariff-container" class="opacity-50 transition-all duration-300">
-            <label for="tariff" class="block text-sm font-medium text-gray-700 mb-2">To'lov rejasi</label>
-            <select id="tariff" class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" disabled>
-              <option value="">To'lov rejasini tanlang</option>
-              <!-- Tariffs will be loaded here -->
-            </select>
-          </div>
-
-          <!-- Initial Payment Input -->
-          <div id="initial-payment-container" class="opacity-50 transition-all duration-300">
-            <label for="initial-payment-input" class="block text-sm font-medium text-gray-700 mb-2">Boshlang'ich to'lov</label>
-            <div class="relative">
-              <input
-                      type="number"
-                      id="initial-payment-input"
-                      class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Miqdorni kiriting"
-                      disabled
-              >
-              <div class="absolute right-4 top-3 text-gray-500" id="currency-symbol">USD</div>
-            </div>
-            <div id="initial-payment-info" class="mt-1 text-xs text-gray-500"></div>
-          </div>
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden">
+        <!-- Loading indicator -->
+        <div id="loading" class="text-center py-16">
+            <div class="inline-block animate-spin rounded-full h-10 w-10 border-b-2 border-t-2 border-blue-700"></div>
+            <p class="mt-3 text-gray-600">Ma'lumotlar yuklanmoqda...</p>
         </div>
 
-        <!-- Price and Payment Summary -->
-        <div id="payment-summary" class="hidden fade-in mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
-          <h3 class="font-medium text-blue-800 mb-3">To'lov rejasi</h3>
-          <div class="grid grid-cols-2 gap-y-3 gap-x-4">
-            <div id="price-container" class="hidden"> <div class="text-xs text-gray-600">Mahsulot narxi</div>
-              <div id="price-display" class="text-lg font-semibold text-gray-900">--</div>
-            </div>
-            <div>
-              <div class="text-xs text-gray-600">Boshlang'ich to'lov</div>
-              <div id="display-initial-payment" class="text-lg font-semibold text-gray-900">--</div>
-            </div>
-            <div class="col-span-2 pt-2 border-t border-blue-200 mt-1">
-              <div class="text-xs text-gray-600">Oylik to'lov</div>
-              <div id="monthly-payment" class="text-xl font-bold text-blue-800">--</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <!-- Selection Form - hidden until data loads -->
+        <div id="calculator-form" class="hidden">
+            <div class="p-5">
+                <div class="space-y-5 mb-6">
+                    <!-- Category Selection -->
+                    <div>
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-2">Kategoriya</label>
+                        <select id="category" class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white transition-all">
+                            <option value="">Kategoriyani tanlang</option>
+                            <!-- Categories will be loaded here -->
+                        </select>
+                    </div>
 
-      <!-- Payment Schedule Section -->
-      <div id="schedule-container" class="mt-5 bg-gray-50 border-t border-gray-200 pt-4 px-5 pb-5 hidden">
-        <h3 class="font-medium text-gray-800 mb-3">To'lov jadvali</h3>
-        <div class="overflow-x-auto bg-white rounded-xl shadow border border-gray-200">
-          <table class="min-w-full divide-y divide-gray-200" id="payment-schedule">
-            <thead>
-            <tr>
-              <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To'lov #</th>
-              <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sana</th>
-              <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Miqdor</th>
-            </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200" id="schedule-body">
-            <!-- Payment schedule will be generated here -->
-            <tr>
-              <td colspan="3" class="px-4 py-3 text-center text-gray-500 text-sm">Ma'lumotlar mavjud emas</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+                    <!-- Product Selection - Combobox -->
+                    <div id="product-selector" class="opacity-50 transition-all duration-300">
+                        <label for="product-input" class="block text-sm font-medium text-gray-700 mb-2">Mahsulot</label>
+                        <div class="combobox-container">
+                            <input type="text" id="product-input" autocomplete="off" class="combobox-input" placeholder="Mahsulotni tanlang yoki qidiring" disabled>
+                            <input type="hidden" id="product-selected-id">
+                            <div id="product-options" class="combobox-options">
+                                <!-- Product options will be populated here -->
+                            </div>
+                        </div>
+                    </div>
 
-    <!-- Error message -->
-    <div id="error-message" class="hidden text-center py-16">
-      <div class="rounded-full bg-red-100 p-3 inline-block">
-        <svg class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-        </svg>
-      </div>
-      <p class="mt-3 text-red-700 font-medium">Ma'lumotlarni yuklashda xatolik yuz berdi.</p>
-      <button id="retry-button" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all">
-        Qayta urinish
-      </button>
+                    <!-- Variation Selection - Combobox -->
+                    <div id="variation-selector" class="opacity-50 transition-all duration-300">
+                        <label for="variation-input" class="block text-sm font-medium text-gray-700 mb-2">Variatsiya</label>
+                        <div class="combobox-container">
+                            <input type="text" id="variation-input" autocomplete="off" class="combobox-input" placeholder="Variatsiyani tanlang yoki qidiring" disabled>
+                            <input type="hidden" id="variation-selected-id">
+                            <div id="variation-options" class="combobox-options">
+                                <!-- Variation options will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tariff Selection -->
+                    <div id="tariff-container" class="opacity-50 transition-all duration-300">
+                        <label for="tariff" class="block text-sm font-medium text-gray-700 mb-2">To'lov rejasi</label>
+                        <select id="tariff" class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" disabled>
+                            <option value="">To'lov rejasini tanlang</option>
+                            <!-- Tariffs will be loaded here -->
+                        </select>
+                    </div>
+
+                    <!-- Initial Payment Input -->
+                    <div id="initial-payment-container" class="opacity-50 transition-all duration-300">
+                        <label for="initial-payment-input" class="block text-sm font-medium text-gray-700 mb-2">Boshlang'ich to'lov</label>
+                        <div class="relative">
+                            <input
+                                    type="number"
+                                    id="initial-payment-input"
+                                    class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                                    placeholder="Miqdorni kiriting"
+                                    disabled
+                            >
+                            <div class="absolute right-4 top-3 text-gray-500" id="currency-symbol">USD</div>
+                        </div>
+                        <div id="initial-payment-info" class="mt-1 text-xs text-gray-500"></div>
+                    </div>
+                </div>
+
+                <!-- Price and Payment Summary -->
+                <div id="payment-summary" class="hidden fade-in mt-8 p-4 bg-blue-50 rounded-xl border border-blue-100">
+                    <h3 class="font-medium text-blue-800 mb-3">To'lov rejasi</h3>
+                    <div class="grid grid-cols-2 gap-y-3 gap-x-4">
+                        <div id="price-container" class="hidden"> <div class="text-xs text-gray-600">Mahsulot narxi</div>
+                            <div id="price-display" class="text-lg font-semibold text-gray-900">--</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-gray-600">Boshlang'ich to'lov</div>
+                            <div id="display-initial-payment" class="text-lg font-semibold text-gray-900">--</div>
+                        </div>
+                        <div class="col-span-2 pt-2 border-t border-blue-200 mt-1">
+                            <div class="text-xs text-gray-600">Oylik to'lov</div>
+                            <div id="monthly-payment" class="text-xl font-bold text-blue-800">--</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment Schedule Section -->
+            <div id="schedule-container" class="mt-5 bg-gray-50 border-t border-gray-200 pt-4 px-5 pb-5 hidden">
+                <h3 class="font-medium text-gray-800 mb-3">To'lov jadvali</h3>
+                <div class="overflow-x-auto bg-white rounded-xl shadow border border-gray-200">
+                    <table class="min-w-full divide-y divide-gray-200" id="payment-schedule">
+                        <thead>
+                        <tr>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">To'lov #</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sana</th>
+                            <th class="px-4 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Miqdor</th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="schedule-body">
+                        <!-- Payment schedule will be generated here -->
+                        <tr>
+                            <td colspan="3" class="px-4 py-3 text-center text-gray-500 text-sm">Ma'lumotlar mavjud emas</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error message -->
+        <div id="error-message" class="hidden text-center py-16">
+            <div class="rounded-full bg-red-100 p-3 inline-block">
+                <svg class="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+            </div>
+            <p class="mt-3 text-red-700 font-medium">Ma'lumotlarni yuklashda xatolik yuz berdi.</p>
+            <button id="retry-button" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-all">
+                Qayta urinish
+            </button>
+        </div>
     </div>
-  </div>
 </div>
 
 <script src="assets/js/script.js"></script>
 <script>
-  // Configuration - Your DigitalOcean Functions URL
-  const API_URL = "https://faas-blr1-8177d592.doserverless.co/api/v1/web/fn-97ec7e19-33ba-4f73-901f-7eee7ff81945/default/calculator-grist-api";
+    // Configuration - Your DigitalOcean Functions URL
+    const API_URL = "https://faas-blr1-8177d592.doserverless.co/api/v1/web/fn-97ec7e19-33ba-4f73-901f-7eee7ff81945/default/calculator-grist-api";
 
-  // State variables
-  let categories = [];
-  let products = [];
-  let variations = [];
-  let prices = [];
-  let tariffs = [];
-  let selectedPrice = 0;
-  let selectedTariff = null;
-  let initialPayment = 0;
+    // State variables
+    let categories = [];
+    let products = [];
+    let variations = [];
+    let prices = [];
+    let tariffs = [];
+    let selectedPrice = 0;
+    let selectedTariff = null;
+    let initialPayment = 0;
 
-  // DOM Elements - Main containers
-  const loadingEl = document.getElementById('loading');
-  const calculatorForm = document.getElementById('calculator-form');
-  const errorMessage = document.getElementById('error-message');
-  const retryButton = document.getElementById('retry-button');
+    // DOM Elements - Main containers
+    const loadingEl = document.getElementById('loading');
+    const calculatorForm = document.getElementById('calculator-form');
+    const errorMessage = document.getElementById('error-message');
+    const retryButton = document.getElementById('retry-button');
 
-  // Form elements
-  const categorySelect = document.getElementById('category');
-  const productSelector = document.getElementById('product-selector');
-  const variationSelector = document.getElementById('variation-selector');
-  const tariffContainer = document.getElementById('tariff-container');
-  const initialPaymentContainer = document.getElementById('initial-payment-container');
-  const paymentSummary = document.getElementById('payment-summary');
-  const scheduleContainer = document.getElementById('schedule-container');
+    // Form elements
+    const categorySelect = document.getElementById('category');
+    const productSelector = document.getElementById('product-selector');
+    const variationSelector = document.getElementById('variation-selector');
+    const tariffContainer = document.getElementById('tariff-container');
+    const initialPaymentContainer = document.getElementById('initial-payment-container');
+    const paymentSummary = document.getElementById('payment-summary');
+    const scheduleContainer = document.getElementById('schedule-container');
 
-  // Combobox elements
-  const productInput = document.getElementById('product-input');
-  const productSelectedId = document.getElementById('product-selected-id');
-  const productOptions = document.getElementById('product-options');
-  const variationInput = document.getElementById('variation-input');
-  const variationSelectedId = document.getElementById('variation-selected-id');
-  const variationOptions = document.getElementById('variation-options');
+    // Combobox elements
+    const productInput = document.getElementById('product-input');
+    const productSelectedId = document.getElementById('product-selected-id');
+    const productOptions = document.getElementById('product-options');
+    const variationInput = document.getElementById('variation-input');
+    const variationSelectedId = document.getElementById('variation-selected-id');
+    const variationOptions = document.getElementById('variation-options');
 
-  // Price and payment elements
-  const priceContainer = document.getElementById('price-container'); // <-- ADD THIS LINE
-  const tariffSelect = document.getElementById('tariff');
-  const priceDisplay = document.getElementById('price-display');
-  const initialPaymentInput = document.getElementById('initial-payment-input');
-  const initialPaymentInfo = document.getElementById('initial-payment-info');
-  const displayInitialPayment = document.getElementById('display-initial-payment');
-  const monthlyPaymentDisplay = document.getElementById('monthly-payment');
-  const scheduleBody = document.getElementById('schedule-body');
+    // Price and payment elements
+    const priceContainer = document.getElementById('price-container'); // <-- ADD THIS LINE
+    const tariffSelect = document.getElementById('tariff');
+    const priceDisplay = document.getElementById('price-display');
+    const initialPaymentInput = document.getElementById('initial-payment-input');
+    const initialPaymentInfo = document.getElementById('initial-payment-info');
+    const displayInitialPayment = document.getElementById('display-initial-payment');
+    const monthlyPaymentDisplay = document.getElementById('monthly-payment');
+    const scheduleBody = document.getElementById('schedule-body');
 
-  // Initialize data
-  async function initializeData() {
-    try {
-      // Show loading state
-      loadingEl.classList.remove('hidden');
-      calculatorForm.classList.add('hidden');
-      errorMessage.classList.add('hidden');
+    // Initialize data
+    async function initializeData() {
+        try {
+            // Show loading state
+            loadingEl.classList.remove('hidden');
+            calculatorForm.classList.add('hidden');
+            errorMessage.classList.add('hidden');
 
-      // Fetch all data from your serverless function
-      const response = await fetch(API_URL);
+            // Fetch all data from your serverless function
+            const response = await fetch(API_URL);
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
 
-      const data = await response.json();
+            const data = await response.json();
 
-      // Store the data
-      categories = data.categories;
-      products = data.products;
-      variations = data.variations;
-      prices = data.prices;
-      tariffs = data.tariffs.filter(tariff => tariff.fields.MainType === true)
-              .sort((a, b) => a.id - b.id);
+            // Store the data
+            categories = data.categories;
+            products = data.products;
+            variations = data.variations;
+            prices = data.prices;
+            tariffs = data.tariffs.filter(tariff => tariff.fields.for_call_center === true)
+                .sort((a, b) => a.id - b.id);
 
-      // Pre-filter products that have prices
-      const productsWithPrices = products.filter(product => {
-        return prices.some(price =>
-                price.fields.product_id === product.id &&
-                price.fields.actual === true
-        );
-      });
+            // Pre-filter products that have prices
+            const productsWithPrices = products.filter(product => {
+                return prices.some(price =>
+                    price.fields.product_id === product.id &&
+                    price.fields.actual === true
+                );
+            });
 
-      // Populate category dropdown
-      categorySelect.innerHTML = '<option value="">Kategoriyani tanlang</option>';
-      categories.forEach(category => {
-        // Only add categories that have products with prices
-        const categoryHasProducts = productsWithPrices.some(product =>
-                product.fields.category_id === category.id
-        );
+            // Populate category dropdown
+            categorySelect.innerHTML = '<option value="">Kategoriyani tanlang</option>';
+            categories.forEach(category => {
+                // Only add categories that have products with prices
+                const categoryHasProducts = productsWithPrices.some(product =>
+                    product.fields.category_id === category.id
+                );
 
-        if (categoryHasProducts) {
-          const option = document.createElement('option');
-          option.value = category.id;
-          option.textContent = category.fields.category_name;
-          categorySelect.appendChild(option);
+                if (categoryHasProducts) {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.fields.category_name;
+                    categorySelect.appendChild(option);
+                }
+            });
+
+            // Set up comboboxes
+            setupCombobox(productInput, productOptions, [], 'product_name', 'id', () => {});
+            setupCombobox(variationInput, variationOptions, [], 'variation_name', 'id', () => {});
+
+            // Hide loading, show calculator
+            loadingEl.classList.add('hidden');
+            calculatorForm.classList.remove('hidden');
+
+        } catch (error) {
+            console.error("Error loading data:", error);
+            loadingEl.classList.add('hidden');
+            errorMessage.classList.remove('hidden');
         }
-      });
-
-      // Set up comboboxes
-      setupCombobox(productInput, productOptions, [], 'product_name', 'id', () => {});
-      setupCombobox(variationInput, variationOptions, [], 'variation_name', 'id', () => {});
-
-      // Hide loading, show calculator
-      loadingEl.classList.add('hidden');
-      calculatorForm.classList.remove('hidden');
-
-    } catch (error) {
-      console.error("Error loading data:", error);
-      loadingEl.classList.add('hidden');
-      errorMessage.classList.remove('hidden');
     }
-  }
 
-  // Format number with thousand separators without currency symbol and round to integers
-  const formatNumber = (amount) => {
-    return new Intl.NumberFormat('uz-UZ').format(Math.round(amount));
-  };
+    // Format number with thousand separators without currency symbol and round to integers
+    const formatNumber = (amount) => {
+        return new Intl.NumberFormat('uz-UZ').format(Math.round(amount));
+    };
 
-  // Combobox functionality
-  function setupCombobox(inputElement, optionsContainer, itemsArray, displayProperty, idProperty, onSelectCallback) {
-    // Show options when input is focused
-    inputElement.addEventListener('focus', () => {
-      if (!inputElement.disabled) {
-        optionsContainer.style.display = 'block';
-      }
-    });
+    // Combobox functionality
+    function setupCombobox(inputElement, optionsContainer, itemsArray, displayProperty, idProperty, onSelectCallback) {
+        // Show options when input is focused
+        inputElement.addEventListener('focus', () => {
+            if (!inputElement.disabled) {
+                optionsContainer.style.display = 'block';
+            }
+        });
 
-    // Filter options as user types
-    inputElement.addEventListener('input', () => {
-      const searchTerm = inputElement.value.toLowerCase();
-      const options = optionsContainer.querySelectorAll('.combobox-option');
+        // Filter options as user types
+        inputElement.addEventListener('input', () => {
+            const searchTerm = inputElement.value.toLowerCase();
+            const options = optionsContainer.querySelectorAll('.combobox-option');
 
-      options.forEach(option => {
-        const text = option.textContent.toLowerCase();
-        if (text.includes(searchTerm)) {
-          option.classList.remove('hidden');
-        } else {
-          option.classList.add('hidden');
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+        });
+
+        // Hide options when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!inputElement.contains(e.target) && !optionsContainer.contains(e.target)) {
+                optionsContainer.style.display = 'none';
+            }
+        });
+
+        // Handle keyboard navigation
+        inputElement.addEventListener('keydown', (e) => {
+            const options = Array.from(optionsContainer.querySelectorAll('.combobox-option:not(.hidden)'));
+            const activeOption = optionsContainer.querySelector('.combobox-option.active');
+            const activeIndex = activeOption ? options.indexOf(activeOption) : -1;
+
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    if (activeIndex < options.length - 1) {
+                        if (activeOption) activeOption.classList.remove('active');
+                        options[activeIndex + 1].classList.add('active');
+                        options[activeIndex + 1].scrollIntoView({ block: 'nearest' });
+                    }
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    if (activeIndex > 0) {
+                        if (activeOption) activeOption.classList.remove('active');
+                        options[activeIndex - 1].classList.add('active');
+                        options[activeIndex - 1].scrollIntoView({ block: 'nearest' });
+                    }
+                    break;
+                case 'Enter':
+                    e.preventDefault();
+                    if (activeOption) {
+                        activeOption.click();
+                    }
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    optionsContainer.style.display = 'none';
+                    break;
+            }
+        });
+    }
+
+    // Function to populate combobox options
+    function populateCombobox(optionsContainer, items, displayProperty, idProperty, onSelectCallback) {
+        // Clear existing options
+        optionsContainer.innerHTML = '';
+
+        // Add each item as an option
+        items.forEach(item => {
+            const option = document.createElement('div');
+            option.className = 'combobox-option';
+            option.textContent = item.fields[displayProperty];
+            option.dataset.id = item[idProperty];
+
+            option.addEventListener('click', () => {
+                onSelectCallback(item);
+            });
+
+            optionsContainer.appendChild(option);
+        });
+    }
+
+    // Helper function to populate tariff dropdown
+    function populateTariffDropdown() {
+        tariffSelect.innerHTML = '<option value="">To\'lov rejasini tanlang</option>';
+
+        let hasCashOption = false;
+
+        tariffs.forEach(tariff => {
+            const option = document.createElement('option');
+            option.value = tariff.id;
+
+            option.textContent = tariff.fields.tariff_name;
+            tariffSelect.appendChild(option);
+
+            // Check if this is a cash option
+            if (tariff.fields.tariff_name.toLowerCase().includes('naqd') ||
+                tariff.fields.tariff_name.toLowerCase().includes('no installment')) {
+                hasCashOption = true;
+            }
+        });
+
+        if (!hasCashOption) {
+            const cashOption = document.createElement('option');
+            cashOption.value = 'cash';
+            cashOption.textContent = 'Naqd';
+            tariffSelect.appendChild(cashOption);
         }
-      });
-    });
-
-    // Hide options when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!inputElement.contains(e.target) && !optionsContainer.contains(e.target)) {
-        optionsContainer.style.display = 'none';
-      }
-    });
-
-    // Handle keyboard navigation
-    inputElement.addEventListener('keydown', (e) => {
-      const options = Array.from(optionsContainer.querySelectorAll('.combobox-option:not(.hidden)'));
-      const activeOption = optionsContainer.querySelector('.combobox-option.active');
-      const activeIndex = activeOption ? options.indexOf(activeOption) : -1;
-
-      switch (e.key) {
-        case 'ArrowDown':
-          e.preventDefault();
-          if (activeIndex < options.length - 1) {
-            if (activeOption) activeOption.classList.remove('active');
-            options[activeIndex + 1].classList.add('active');
-            options[activeIndex + 1].scrollIntoView({ block: 'nearest' });
-          }
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          if (activeIndex > 0) {
-            if (activeOption) activeOption.classList.remove('active');
-            options[activeIndex - 1].classList.add('active');
-            options[activeIndex - 1].scrollIntoView({ block: 'nearest' });
-          }
-          break;
-        case 'Enter':
-          e.preventDefault();
-          if (activeOption) {
-            activeOption.click();
-          }
-          break;
-        case 'Escape':
-          e.preventDefault();
-          optionsContainer.style.display = 'none';
-          break;
-      }
-    });
-  }
-
-  // Function to populate combobox options
-  function populateCombobox(optionsContainer, items, displayProperty, idProperty, onSelectCallback) {
-    // Clear existing options
-    optionsContainer.innerHTML = '';
-
-    // Add each item as an option
-    items.forEach(item => {
-      const option = document.createElement('div');
-      option.className = 'combobox-option';
-      option.textContent = item.fields[displayProperty];
-      option.dataset.id = item[idProperty];
-
-      option.addEventListener('click', () => {
-        onSelectCallback(item);
-      });
-
-      optionsContainer.appendChild(option);
-    });
-  }
-
-  // Helper function to populate tariff dropdown
-  function populateTariffDropdown() {
-    tariffSelect.innerHTML = '<option value="">To\'lov rejasini tanlang</option>';
-
-    // Add a cash/naqd option if it doesn't exist in tariffs
-    let hasCashOption = false;
-
-    tariffs.forEach(tariff => {
-      const option = document.createElement('option');
-      option.value = tariff.id;
-      option.textContent = tariff.fields.InstallmentTypeIDName;
-      tariffSelect.appendChild(option);
-
-      // Check if this is a cash option
-      if (tariff.fields.InstallmentTypeIDName.toLowerCase().includes('naqd')) {
-        hasCashOption = true;
-      }
-    });
-
-    // If no cash option exists in the tariffs, add a custom one
-    if (!hasCashOption) {
-      const cashOption = document.createElement('option');
-      cashOption.value = 'cash';
-      cashOption.textContent = 'Naqd';
-      tariffSelect.appendChild(cashOption);
     }
-  }
 
-  // Function to generate cash payment schedule
-  function generateCashPaymentSchedule(cashAmount) {
-    scheduleBody.innerHTML = '';
+    // Function to generate cash payment schedule
+    function generateCashPaymentSchedule(cashAmount) {
+        scheduleBody.innerHTML = '';
 
-    // For cash option, there's just one payment
-    const cashRow = document.createElement('tr');
-    cashRow.innerHTML = `
+        // For cash option, there's just one payment
+        const cashRow = document.createElement('tr');
+        cashRow.innerHTML = `
     <td class="px-4 py-3">1</td>
     <td class="px-4 py-3">${new Date().toLocaleDateString()}</td>
     <td class="px-4 py-3 font-medium">${formatNumber(cashAmount)}</td>
   `;
-    scheduleBody.appendChild(cashRow);
+        scheduleBody.appendChild(cashRow);
 
-    // Show the schedule container
-    scheduleContainer.classList.remove('hidden');
-  }
+        // Show the schedule container
+        scheduleContainer.classList.remove('hidden');
+    }
 
-  // Function to generate payment schedule
-  function generatePaymentSchedule(initialPayment, monthlyPayment, months) {
-    scheduleBody.innerHTML = '';
+    // Function to generate payment schedule
+    function generatePaymentSchedule(initialPayment, monthlyPayment, months) {
+        scheduleBody.innerHTML = '';
 
-    // Add initial payment row
-    const initialRow = document.createElement('tr');
-    initialRow.innerHTML = `
-    <td class="px-4 py-3">Boshlang'ich</td>
-    <td class="px-4 py-3">${new Date().toLocaleDateString()}</td>
-    <td class="px-4 py-3 font-medium">${formatNumber(initialPayment)}</td>
-  `;
-    scheduleBody.appendChild(initialRow);
+        // Add initial payment row (only if > 0)
+        if (initialPayment > 0) {
+            const initialRow = document.createElement('tr');
+            initialRow.innerHTML = `
+      <td class="px-4 py-3">Boshlang'ich</td>
+      <td class="px-4 py-3">${new Date().toLocaleDateString()}</td>
+      <td class="px-4 py-3 font-medium">${formatNumber(initialPayment)}</td>
+    `;
+            scheduleBody.appendChild(initialRow);
+        }
 
-    // Add monthly payment rows
-    for (let i = 1; i <= months; i++) {
-      const paymentDate = new Date();
+        // Check if this is a day-based tariff
+        const dayMatch = selectedTariff.fields.tariff_name.match(/(\d+)d/);
 
-      // For tariffs with "d" notation (days), adjust the date accordingly
-      const dayMatch = selectedTariff.fields.InstallmentTypeIDName.match(/(\d+)d/);
-      if (dayMatch && i === 1) {
-        // If it's a day-based tariff, add days instead of months
-        const days = parseInt(dayMatch[1]);
-        paymentDate.setDate(paymentDate.getDate() + days);
-      } else {
-        // Otherwise add months as usual
-        paymentDate.setMonth(paymentDate.getMonth() + i);
-      }
+        if (dayMatch) {
+            // For day-based tariffs (like "15d"), show single payment after specified days
+            const days = parseInt(dayMatch[1]);
+            const paymentDate = new Date();
+            paymentDate.setDate(paymentDate.getDate() + days);
 
-      const paymentRow = document.createElement('tr');
-      paymentRow.className = i % 2 === 0 ? 'bg-gray-50' : '';
-      paymentRow.innerHTML = `
-      <td class="px-4 py-3">${i}</td>
+            const paymentRow = document.createElement('tr');
+            paymentRow.innerHTML = `
+      <td class="px-4 py-3">1</td>
       <td class="px-4 py-3">${paymentDate.toLocaleDateString()}</td>
       <td class="px-4 py-3 font-medium">${formatNumber(monthlyPayment)}</td>
     `;
-      scheduleBody.appendChild(paymentRow);
-    }
+            scheduleBody.appendChild(paymentRow);
+        } else {
+            // For month-based tariffs, add monthly payment rows
+            for (let i = 1; i <= months; i++) {
+                const paymentDate = new Date();
+                paymentDate.setMonth(paymentDate.getMonth() + i);
 
-    // Show the schedule container
-    scheduleContainer.classList.remove('hidden');
-  }
-
-  // Calculate payments based on selected tariff and initial payment
-  function calculatePayments() {
-    if (!selectedPrice || !selectedTariff) {
-      return;
-    }
-
-    // Ensure price container stays hidden for installment plans
-    priceContainer.classList.add('hidden'); // <-- ADD THIS LINE
-
-    // Get initial payment from input
-    initialPayment = parseFloat(initialPaymentInput.value) || 0;
-
-    // Make sure initial payment is within bounds
-    if (initialPayment < 0) initialPayment = 0;
-    if (initialPayment > selectedPrice) initialPayment = selectedPrice;
-
-    const remainingAmount = selectedPrice - initialPayment;
-
-    // Get tariff values
-    const coefficient = selectedTariff.fields.Coefficient;
-    const monthlyPaymentRate = selectedTariff.fields.MonthlyPayment;
-
-    // Extract months from tariff name (e.g., "3m (+0d)" -> 3)
-    let months = 1;
-    const monthMatch = selectedTariff.fields.InstallmentTypeIDName.match(/(\d+)m/);
-    if (monthMatch) {
-      months = parseInt(monthMatch[1]);
-    } else {
-      // Check for days format "15d"
-      const dayMatch = selectedTariff.fields.InstallmentTypeIDName.match(/(\d+)d/);
-      if (dayMatch) {
-        // For day-based tariffs, we'll just show a single payment
-        months = 1;
-      }
-    }
-
-    // The MonthlyPayment value already incorporates the division by months
-    const totalAmount = remainingAmount * coefficient;
-
-    // Calculate the payment per month (using the monthlyPaymentRate)
-    const monthlyPayment = totalAmount * monthlyPaymentRate;
-
-    // Update all payment displays
-    // priceDisplay.textContent = `${formatNumber(selectedPrice)}`;
-    displayInitialPayment.textContent = `${formatNumber(initialPayment)}`;
-    monthlyPaymentDisplay.textContent = `${formatNumber(monthlyPayment)}`;
-
-    // Show payment summary
-    paymentSummary.classList.remove('hidden');
-
-    // Generate payment schedule
-    generatePaymentSchedule(initialPayment, monthlyPayment, months);
-  }
-
-  // Event handler for category selection
-  categorySelect.addEventListener('change', function() {
-    const categoryId = this.value;
-
-    // Clear subsequent inputs
-    productInput.value = '';
-    productSelectedId.value = '';
-    variationInput.value = '';
-    variationSelectedId.value = '';
-
-    // Reset UI states
-    productSelector.classList.add('opacity-50');
-    variationSelector.classList.add('opacity-50');
-    tariffContainer.classList.add('opacity-50');
-    initialPaymentContainer.classList.add('opacity-50');
-
-    productInput.disabled = true;
-    variationInput.disabled = true;
-    tariffSelect.disabled = true;
-    initialPaymentInput.disabled = true;
-
-    // Hide results
-    paymentSummary.classList.add('hidden');
-    scheduleContainer.classList.add('hidden');
-    priceContainer.classList.add('hidden');
-
-    if (categoryId) {
-      // Filter products by category with prices
-      const categoryProducts = products.filter(product =>
-              product.fields.category_id && product.fields.category_id === parseInt(categoryId)
-      );
-
-      // Only show products that have prices
-      const productsWithPrices = categoryProducts.filter(product => {
-        return prices.some(price =>
-                price.fields.product_id === product.id &&
-                price.fields.actual === true
-        );
-      });
-
-      if (productsWithPrices.length > 0) {
-        // Enable product selection
-        productSelector.classList.remove('opacity-50');
-        productInput.disabled = false;
-
-        // Add animation
-        productSelector.classList.add('pulse-once');
-        setTimeout(() => {
-          productSelector.classList.remove('pulse-once');
-        }, 500);
-
-        // Populate product combobox
-        populateCombobox(
-                productOptions,
-                productsWithPrices,
-                'product_name',
-                'id',
-                (selectedProduct) => {
-                  // Set the selected product
-                  productInput.value = selectedProduct.fields.product_name;
-                  productSelectedId.value = selectedProduct.id;
-                  productOptions.style.display = 'none';
-
-                  // Trigger the product change event
-                  handleProductChange(selectedProduct.id);
-                }
-        );
-      }
-    }
-  });
-
-  // Function to handle product change
-  function handleProductChange(productId) {
-    // Clear subsequent inputs
-    variationInput.value = '';
-    variationSelectedId.value = '';
-    variationSelector.classList.add('opacity-50');
-    tariffContainer.classList.add('opacity-50');
-    initialPaymentContainer.classList.add('opacity-50');
-
-    variationInput.disabled = true;
-    tariffSelect.disabled = true;
-    initialPaymentInput.disabled = true;
-
-    // Hide results
-    paymentSummary.classList.add('hidden');
-    scheduleContainer.classList.add('hidden');
-    priceContainer.classList.add('hidden');
-
-    if (productId) {
-      // First, check if this product has prices
-      const productHasPrices = prices.some(price =>
-              price.fields.product_id === parseInt(productId) &&
-              price.fields.actual === true
-      );
-
-      if (!productHasPrices) {
-        return;
-      }
-
-      // Filter variations by product and check each one has a price
-      const productVariations = variations.filter(variation =>
-              variation.fields.product_id && variation.fields.product_id === parseInt(productId)
-      );
-
-      // Filter out variations that don't have prices
-      const variationsWithPrices = productVariations.filter(variation => {
-        return prices.some(price =>
-                price.fields.product_id === parseInt(productId) &&
-                price.fields.variation_id === variation.id &&
-                price.fields.actual === true
-        );
-      });
-
-      if (variationsWithPrices.length > 0) {
-        // Enable variation selection
-        variationSelector.classList.remove('opacity-50');
-        variationInput.disabled = false;
-
-        // Add animation
-        variationSelector.classList.add('pulse-once');
-        setTimeout(() => {
-          variationSelector.classList.remove('pulse-once');
-        }, 500);
-
-        // Populate variation combobox
-        populateCombobox(
-                variationOptions,
-                variationsWithPrices,
-                'variation_name',
-                'id',
-                (selectedVariation) => {
-                  // Set the selected variation
-                  variationInput.value = selectedVariation.fields.variation_name;
-                  variationSelectedId.value = selectedVariation.id;
-                  variationOptions.style.display = 'none';
-
-                  // Trigger the variation change
-                  handleVariationChange(parseInt(productId), selectedVariation.id);
-                }
-        );
-      } else {
-        // No variations with prices - check if product has a direct price
-        const priceItem = prices.find(price =>
-                price.fields.product_id === parseInt(productId) &&
-                (!price.fields.variation_id || price.fields.variation_id === 0) &&
-                price.fields.actual === true
-        );
-
-        if (priceItem) {
-          // Product has a direct price without variation
-          selectedPrice = priceItem.fields.price;
-
-          // Set up tariff selection
-          setupTariffSelection();
+                const paymentRow = document.createElement('tr');
+                paymentRow.className = i % 2 === 0 ? 'bg-gray-50' : '';
+                paymentRow.innerHTML = `
+        <td class="px-4 py-3">${i}</td>
+        <td class="px-4 py-3">${paymentDate.toLocaleDateString()}</td>
+        <td class="px-4 py-3 font-medium">${formatNumber(monthlyPayment)}</td>
+      `;
+                scheduleBody.appendChild(paymentRow);
+            }
         }
-      }
+
+        // Show the schedule container
+        scheduleContainer.classList.remove('hidden');
     }
-  }
 
-  // Function to handle variation change
-  function handleVariationChange(productId, variationId) {
-    // Reset subsequent elements
-    tariffContainer.classList.add('opacity-50');
-    initialPaymentContainer.classList.add('opacity-50');
-    tariffSelect.disabled = true;
-    initialPaymentInput.disabled = true;
+    // Calculate payments based on selected tariff and initial payment
+    function calculatePayments() {
+        if (!selectedPrice || !selectedTariff) {
+            return;
+        }
 
-    // Hide results
-    paymentSummary.classList.add('hidden');
-    scheduleContainer.classList.add('hidden');
-    priceContainer.classList.add('hidden');
+        // Ensure price container stays hidden for installment plans
+        priceContainer.classList.add('hidden');
 
-    if (productId && variationId) {
-      // Find price for selected product and variation
-      const priceItem = prices.find(price =>
-              price.fields.product_id === productId &&
-              price.fields.variation_id === parseInt(variationId) &&
-              price.fields.actual === true
-      );
+        // Get initial payment from input
+        initialPayment = parseFloat(initialPaymentInput.value) || 0;
 
-      if (priceItem) {
-        // Set the price
-        selectedPrice = priceItem.fields.price;
+        // Make sure initial payment is within bounds
+        if (initialPayment < 0) initialPayment = 0;
+        if (initialPayment > selectedPrice) initialPayment = selectedPrice;
 
-        // Set up tariff selection
-        setupTariffSelection();
-      }
-    }
-  }
+        const remainingAmount = selectedPrice - initialPayment;
 
-  // Setup tariff selection after product/variation is selected
-  function setupTariffSelection() {
-    // Populate tariff dropdown
-    populateTariffDropdown();
+        // Get tariff values
+        const coefficient = selectedTariff.fields.coefficient;
+        const paymentsCount = selectedTariff.fields.payments_count || 1;
 
-    // Enable tariff selection
-    tariffContainer.classList.remove('opacity-50');
-    tariffSelect.disabled = false;
+        // Extract actual months from tariff name for schedule generation
+        let actualMonths = paymentsCount; // Default to payments_count
+        const monthMatch = selectedTariff.fields.tariff_name.match(/(\d+)m/);
+        if (monthMatch) {
+            actualMonths = parseInt(monthMatch[1]);
+        }
 
-    // Add animation
-    tariffContainer.classList.add('pulse-once');
-    setTimeout(() => {
-      tariffContainer.classList.remove('pulse-once');
-    }, 500);
-  }
+        // Calculate total amount after applying coefficient
+        const totalAmount = remainingAmount * coefficient;
 
-  // Set up initial payment after tariff is selected
-  function setupInitialPayment() {
-    // Set default initial payment to 30% of price
-    initialPayment = Math.round(selectedPrice * 0.3);
-    initialPaymentInput.value = initialPayment;
-    initialPaymentInput.min = 0;
-    initialPaymentInput.max = selectedPrice;
+        // Calculate monthly payment (divide by actual months, not payments_count)
+        const monthlyPayment = actualMonths > 0 ? totalAmount / actualMonths : totalAmount;
 
-    // Enable initial payment input
-    initialPaymentContainer.classList.remove('opacity-50');
-    initialPaymentInput.disabled = false;
-
-    // Add animation
-    initialPaymentContainer.classList.add('pulse-once');
-    setTimeout(() => {
-      initialPaymentContainer.classList.remove('pulse-once');
-    }, 500);
-
-    // Update info text
-    initialPaymentInfo.textContent = `Min: 0 | Max: ${formatNumber(selectedPrice)}`;
-  }
-
-  // Event handlers for combobox clicks
-  productInput.addEventListener('click', function() {
-    if (!this.disabled) {
-      productOptions.style.display = 'block';
-    }
-  });
-
-  variationInput.addEventListener('click', function() {
-    if (!this.disabled) {
-      variationOptions.style.display = 'block';
-    }
-  });
-
-  // Event handlers for initial payment input and slider
-  initialPaymentInput.addEventListener('input', function() {
-    const value = parseFloat(this.value) || 0;
-
-    if (selectedPrice > 0 && selectedTariff) {
-      calculatePayments();
-    }
-  });
-
-  // Tariff selection event handler
-  tariffSelect.addEventListener('change', function() {
-    const tariffId = this.value;
-
-    // Reset results appearance first
-    paymentSummary.classList.add('hidden');
-    scheduleContainer.classList.add('hidden');
-    priceContainer.classList.add('hidden'); // <-- Hide price container by default on change
-
-    if (tariffId) {
-      // Handle both regular tariffs and our custom cash option
-      if (tariffId === 'cash') {
-        // This is our custom cash option
-        selectedTariff = {
-          id: 'cash',
-          fields: {
-            InstallmentTypeIDName: 'Naqd',
-            Coefficient: 1,
-            MonthlyPayment: 1
-          }
-        };
-
-        // Disable initial payment
-        initialPaymentInput.disabled = true;
-        initialPaymentContainer.classList.add('opacity-50'); // Visually indicate disabled
-
-        // Show the price container ONLY for Naqd
-        priceContainer.classList.remove('hidden'); // <-- SHOW Price container
-
-        // Update displays for Naqd
-        priceDisplay.textContent = `${formatNumber(selectedPrice)}`; // Set price text
-        displayInitialPayment.textContent = `0`;
-        monthlyPaymentDisplay.textContent = `0`;
+        // Update all payment displays
+        displayInitialPayment.textContent = `${formatNumber(initialPayment)}`;
+        monthlyPaymentDisplay.textContent = `${formatNumber(monthlyPayment)}`;
 
         // Show payment summary
         paymentSummary.classList.remove('hidden');
 
-        // Generate a simple one-time payment schedule
-        generateCashPaymentSchedule(selectedPrice);
-
-      } else {
-        // Regular tariff option
-        // Ensure price container is hidden for installment plans
-        priceContainer.classList.add('hidden'); // <-- HIDE Price container
-
-        selectedTariff = tariffs.find(tariff => tariff.id === parseInt(tariffId));
-
-        // Setup initial payment controls
-        setupInitialPayment(); // This enables the input field
-
-        // Calculate payments with default initial payment
-        // calculatePayments will update the other fields and show the summary
-        calculatePayments();
-      }
-    } else {
-      // No tariff selected
-      selectedTariff = null;
-      initialPaymentContainer.classList.add('opacity-50');
-      initialPaymentInput.disabled = true;
-      priceContainer.classList.add('hidden'); // <-- Keep price hidden if nothing selected
+        // Generate payment schedule using actual months
+        generatePaymentSchedule(initialPayment, monthlyPayment, actualMonths);
     }
-  });
-  // Retry button handler
-  retryButton.addEventListener('click', function() {
-    initializeData();
-  });
 
-  // Initialize data on page load
-  document.addEventListener('DOMContentLoaded', initializeData);
+    // Event handler for category selection
+    categorySelect.addEventListener('change', function() {
+        const categoryId = this.value;
+
+        // Clear subsequent inputs
+        productInput.value = '';
+        productSelectedId.value = '';
+        variationInput.value = '';
+        variationSelectedId.value = '';
+
+        // Reset UI states
+        productSelector.classList.add('opacity-50');
+        variationSelector.classList.add('opacity-50');
+        tariffContainer.classList.add('opacity-50');
+        initialPaymentContainer.classList.add('opacity-50');
+
+        productInput.disabled = true;
+        variationInput.disabled = true;
+        tariffSelect.disabled = true;
+        initialPaymentInput.disabled = true;
+
+        // Hide results
+        paymentSummary.classList.add('hidden');
+        scheduleContainer.classList.add('hidden');
+        priceContainer.classList.add('hidden');
+
+        if (categoryId) {
+            // Filter products by category with prices
+            const categoryProducts = products.filter(product =>
+                product.fields.category_id && product.fields.category_id === parseInt(categoryId)
+            );
+
+            // Only show products that have prices
+            const productsWithPrices = categoryProducts.filter(product => {
+                return prices.some(price =>
+                    price.fields.product_id === product.id &&
+                    price.fields.actual === true
+                );
+            });
+
+            if (productsWithPrices.length > 0) {
+                // Enable product selection
+                productSelector.classList.remove('opacity-50');
+                productInput.disabled = false;
+
+                // Add animation
+                productSelector.classList.add('pulse-once');
+                setTimeout(() => {
+                    productSelector.classList.remove('pulse-once');
+                }, 500);
+
+                // Populate product combobox
+                populateCombobox(
+                    productOptions,
+                    productsWithPrices,
+                    'product_name',
+                    'id',
+                    (selectedProduct) => {
+                        // Set the selected product
+                        productInput.value = selectedProduct.fields.product_name;
+                        productSelectedId.value = selectedProduct.id;
+                        productOptions.style.display = 'none';
+
+                        // Trigger the product change event
+                        handleProductChange(selectedProduct.id);
+                    }
+                );
+            }
+        }
+    });
+
+    // Function to handle product change
+    function handleProductChange(productId) {
+        // Clear subsequent inputs
+        variationInput.value = '';
+        variationSelectedId.value = '';
+        variationSelector.classList.add('opacity-50');
+        tariffContainer.classList.add('opacity-50');
+        initialPaymentContainer.classList.add('opacity-50');
+
+        variationInput.disabled = true;
+        tariffSelect.disabled = true;
+        initialPaymentInput.disabled = true;
+
+        // Hide results
+        paymentSummary.classList.add('hidden');
+        scheduleContainer.classList.add('hidden');
+        priceContainer.classList.add('hidden');
+
+        if (productId) {
+            // First, check if this product has prices
+            const productHasPrices = prices.some(price =>
+                price.fields.product_id === parseInt(productId) &&
+                price.fields.actual === true
+            );
+
+            if (!productHasPrices) {
+                return;
+            }
+
+            // Filter variations by product and check each one has a price
+            const productVariations = variations.filter(variation =>
+                variation.fields.product_id && variation.fields.product_id === parseInt(productId)
+            );
+
+            // Filter out variations that don't have prices
+            const variationsWithPrices = productVariations.filter(variation => {
+                return prices.some(price =>
+                    price.fields.product_id === parseInt(productId) &&
+                    price.fields.variation_id === variation.id &&
+                    price.fields.actual === true
+                );
+            });
+
+            if (variationsWithPrices.length > 0) {
+                // Enable variation selection
+                variationSelector.classList.remove('opacity-50');
+                variationInput.disabled = false;
+
+                // Add animation
+                variationSelector.classList.add('pulse-once');
+                setTimeout(() => {
+                    variationSelector.classList.remove('pulse-once');
+                }, 500);
+
+                // Populate variation combobox
+                populateCombobox(
+                    variationOptions,
+                    variationsWithPrices,
+                    'variation_name',
+                    'id',
+                    (selectedVariation) => {
+                        // Set the selected variation
+                        variationInput.value = selectedVariation.fields.variation_name;
+                        variationSelectedId.value = selectedVariation.id;
+                        variationOptions.style.display = 'none';
+
+                        // Trigger the variation change
+                        handleVariationChange(parseInt(productId), selectedVariation.id);
+                    }
+                );
+            } else {
+                // No variations with prices - check if product has a direct price
+                const priceItem = prices.find(price =>
+                    price.fields.product_id === parseInt(productId) &&
+                    (!price.fields.variation_id || price.fields.variation_id === 0) &&
+                    price.fields.actual === true
+                );
+
+                if (priceItem) {
+                    // Product has a direct price without variation
+                    selectedPrice = priceItem.fields.price;
+
+                    // Set up tariff selection
+                    setupTariffSelection();
+                }
+            }
+        }
+    }
+
+    // Function to handle variation change
+    function handleVariationChange(productId, variationId) {
+        // Reset subsequent elements
+        tariffContainer.classList.add('opacity-50');
+        initialPaymentContainer.classList.add('opacity-50');
+        tariffSelect.disabled = true;
+        initialPaymentInput.disabled = true;
+
+        // Hide results
+        paymentSummary.classList.add('hidden');
+        scheduleContainer.classList.add('hidden');
+        priceContainer.classList.add('hidden');
+
+        if (productId && variationId) {
+            // Find price for selected product and variation
+            const priceItem = prices.find(price =>
+                price.fields.product_id === productId &&
+                price.fields.variation_id === parseInt(variationId) &&
+                price.fields.actual === true
+            );
+
+            if (priceItem) {
+                // Set the price
+                selectedPrice = priceItem.fields.price;
+
+                // Set up tariff selection
+                setupTariffSelection();
+            }
+        }
+    }
+
+    // Setup tariff selection after product/variation is selected
+    function setupTariffSelection() {
+        // Populate tariff dropdown
+        populateTariffDropdown();
+
+        // Enable tariff selection
+        tariffContainer.classList.remove('opacity-50');
+        tariffSelect.disabled = false;
+
+        // Add animation
+        tariffContainer.classList.add('pulse-once');
+        setTimeout(() => {
+            tariffContainer.classList.remove('pulse-once');
+        }, 500);
+    }
+
+    // Set up initial payment after tariff is selected
+    function setupInitialPayment() {
+        // Set default initial payment to 30% of price
+        initialPayment = Math.round(selectedPrice * 0.3);
+        initialPaymentInput.value = initialPayment;
+        initialPaymentInput.min = 0;
+        initialPaymentInput.max = selectedPrice;
+
+        // Enable initial payment input
+        initialPaymentContainer.classList.remove('opacity-50');
+        initialPaymentInput.disabled = false;
+
+        // Add animation
+        initialPaymentContainer.classList.add('pulse-once');
+        setTimeout(() => {
+            initialPaymentContainer.classList.remove('pulse-once');
+        }, 500);
+
+        // Update info text
+        initialPaymentInfo.textContent = `Min: 0 | Max: ${formatNumber(selectedPrice)}`;
+    }
+
+    // Event handlers for combobox clicks
+    productInput.addEventListener('click', function() {
+        if (!this.disabled) {
+            productOptions.style.display = 'block';
+        }
+    });
+
+    variationInput.addEventListener('click', function() {
+        if (!this.disabled) {
+            variationOptions.style.display = 'block';
+        }
+    });
+
+    // Event handlers for initial payment input and slider
+    initialPaymentInput.addEventListener('input', function() {
+        const value = parseFloat(this.value) || 0;
+
+        if (selectedPrice > 0 && selectedTariff) {
+            calculatePayments();
+        }
+    });
+
+    // Tariff selection event handler
+    tariffSelect.addEventListener('change', function() {
+        const tariffId = this.value;
+
+        // Reset results appearance first
+        paymentSummary.classList.add('hidden');
+        scheduleContainer.classList.add('hidden');
+        priceContainer.classList.add('hidden'); // <-- Hide price container by default on change
+
+        if (tariffId) {
+            // Handle both regular tariffs and our custom cash option
+            if (tariffId === 'cash') {
+                selectedTariff = {
+                    id: 'cash',
+                    fields: {
+                        tariff_name: 'Naqd', // Use tariff_name
+                        coefficient: 1,
+                        payments_count: 1
+                    }
+                };
+
+                // Disable initial payment
+                initialPaymentInput.disabled = true;
+                initialPaymentContainer.classList.add('opacity-50'); // Visually indicate disabled
+
+                // Show the price container ONLY for Naqd
+                priceContainer.classList.remove('hidden'); // <-- SHOW Price container
+
+                // Update displays for Naqd
+                priceDisplay.textContent = `${formatNumber(selectedPrice)}`; // Set price text
+                displayInitialPayment.textContent = `0`;
+                monthlyPaymentDisplay.textContent = `0`;
+
+                // Show payment summary
+                paymentSummary.classList.remove('hidden');
+
+                // Generate a simple one-time payment schedule
+                generateCashPaymentSchedule(selectedPrice);
+
+            } else {
+                // Regular tariff option
+                // Ensure price container is hidden for installment plans
+                priceContainer.classList.add('hidden'); // <-- HIDE Price container
+
+                selectedTariff = tariffs.find(tariff => tariff.id === parseInt(tariffId));
+
+                // Setup initial payment controls
+                setupInitialPayment(); // This enables the input field
+
+                // Calculate payments with default initial payment
+                // calculatePayments will update the other fields and show the summary
+                calculatePayments();
+            }
+        } else {
+            // No tariff selected
+            selectedTariff = null;
+            initialPaymentContainer.classList.add('opacity-50');
+            initialPaymentInput.disabled = true;
+            priceContainer.classList.add('hidden'); // <-- Keep price hidden if nothing selected
+        }
+    });
+    // Retry button handler
+    retryButton.addEventListener('click', function() {
+        initializeData();
+    });
+
+    // Initialize data on page load
+    document.addEventListener('DOMContentLoaded', initializeData);
 </script>
 </body>
 </html>
